@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Задание 2</title>
+  </head>
+  <body>
+    <h3>Task 02</h3>
+    <!-- Форма для ввода положения фигуры -->
+    <form name="inputposition">
+        <h3>Исходное положение:</h3>
+        <p><input type="text" name="position" value="D4"></input></p>
+        <p><input type="button" name="btn" value="Ok"></input></p>
+    </form>
+    
+    <script>
+    
+        // двумерный массив - шахматная доска
+        var field = [
+            ["A8", "B8", "C8", "D8", "E8", "F8", "G8", "H8"],
+            ["A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7"],
+            ["A6", "B6", "C6", "D6", "E6", "F6", "G6", "H6"],
+            ["A5", "B5", "C5", "D5", "E5", "F5", "G5", "H5"],
+            ["A4", "B4", "C4", "D4", "E4", "F4", "G4", "H4"],
+            ["A3", "B3", "C3", "D3", "E3", "F3", "G3", "H3"],
+            ["A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2"],
+            ["A1", "B1", "C1", "D1", "E1", "F1", "G1", "H1"] 
+        ];    
+    
+        // двумерный массив - все возможные ходы конем по x, y
+        var moves = [
+            [-1, -2],
+            [1, -2],
+            [2, -1],
+            [2, 1],
+            [1, 2],
+            [-1, 2],
+            [-2, -1],
+            [-2, 1]
+        ];
+
+    function checkForm() {
+                    
+        // находим поле position
+        var positionBox = document.inputposition.position;
+        
+        // присваиваем переменной значение поля + меняем регистр (заглавные)
+        var position = positionBox.value.toUpperCase();
+        
+        // получаем положение фигуры в числовых координатах x и y
+        var positionXY = find(field, position);
+        positionX = positionXY [0];
+        positionY = positionXY [1];
+        
+        var correctMoves = "";
+        
+        // перебор возможных ходов и запись в переменную
+        for (var i = 0; i < 8; i++) {
+            correctMoves += checkAndGet (field, moves [i][0], moves [i][1]);
+        }
+               
+        // вывод возможных ходов
+        alert("Возможные варианты хода:\n\n" + correctMoves);
+             
+    }    
+    
+    // определяем положение фигуры в числовых координатах x и y
+    function find(array, value) {
+
+        for (var i = 0; i < 8; i++) {
+            for (var j = 0; j < 8; j++) {
+                if (array[i][j] == value) return [i, j];
+            }
+        }
+
+        alert("Некорректный ввод");
+    }
+
+    // перебор всех ходов относительно введенного пользователем положения фигуры
+    // функция возвращает валидные ходы-строки
+    function checkAndGet (array, value1, value2) {
+        var moveX = positionX + value1;
+        var moveY = positionY + value2;
+        if ((moveX) >= 0  && (moveX) <= 7 && (moveY) >= 0  && (moveY) <= 7) return field[moveX][moveY] + " "
+        else return "";
+    }
+
+      // перехватываем нажатие на кнопку и запускаем функцию
+      var okButton = document.inputposition.btn;
+      okButton.addEventListener("click", checkForm);
+    </script>
+  
+  </body>
+</html>
